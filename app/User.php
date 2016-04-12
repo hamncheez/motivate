@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 
 class User extends Authenticatable
 {
@@ -12,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'lastname', 'tagline', 'email', 'password', 'role'
     ];
 
     /**
@@ -23,4 +24,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /***
+     * Each user has many posts, but 
+     * each post can only have one user (author)
+`   ***/
+
+    public function posts(){
+        return $this->hasMany('App\Post');
+    }
+
+     /***
+     * Each user has many categories, but 
+     * each category can only have one user (Admin author)
+`   ***/
+
+    public function categories(){
+        return $this->hasMany('App\Category');
+    }
 }

@@ -18,8 +18,19 @@ class CategoryPostTable extends Migration
             $table->integer('post_id')->unsigned();
             $table->timestamps();
 
-          //  $table->foreign('category_id')->references('id')->on('categories')->onDelete('casacde');
-            //$table->foreign('post_id')->references('id')->on('posts')->onDelete('casacde');
+             // $table->foreign('category_id')->references('id')->on('categories')->onDelete('casacde');
+             // $table->foreign('post_id')->references('id')->on('posts')->onDelete('casacde');
+        });
+
+        Schema::create('post_user', function(Blueprint $table){
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('post_id')->unsigned();
+            $table->timestamps();
+
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('casacde');
+            // $table->foreign('post_id')->references('id')->on('posts')->onDelete('casacde');
+
         });
     }
 

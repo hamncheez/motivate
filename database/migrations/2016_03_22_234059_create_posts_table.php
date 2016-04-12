@@ -18,10 +18,10 @@ class CreatePostsTable extends Migration
             $table->text('body');
 
             $table->integer('user_id')->unsigned();
-          //  $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+           // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->integer('pub_status');
-            $table->integer('upvotes');
+            $table->integer('pubstatus');
+            $table->integer('favoritescount');
             $table->timestamps();
             $table->timestamp('published_on');
         });

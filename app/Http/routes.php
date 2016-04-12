@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
 });
 
 /*
@@ -28,4 +28,14 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+
+Route::group(['prefix' => 'api/v1'], function(){
+	Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
+	Route::post('authenticate', 'AuthenticateController@authenticate');
+	Route::get('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
+	Route::resource('users','UsersController');
+	Route::resource('posts','PostsController');
+	Route::resource('categories','CategoriesController');
 });

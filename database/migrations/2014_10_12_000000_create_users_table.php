@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('type')->unique();
         });
         Schema::table('users', function(Blueprint $table){
-           // $table->foreign('role')->references('id')->on('roles');
+            $table->foreign('role')->references('id')->on('roles');
         });
     }
 
