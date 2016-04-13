@@ -31,11 +31,14 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 
-Route::group(['prefix' => 'api/v1'], function(){
+Route::group(['middleware'=>'cors','prefix' => 'api/v1'], function(){
 	Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
 	Route::post('authenticate', 'AuthenticateController@authenticate');
 	Route::get('authenticate/user', 'AuthenticateController@getAuthenticatedUser');
 	Route::resource('users','UsersController');
 	Route::resource('posts','PostsController');
 	Route::resource('categories','CategoriesController');
+});
+Route::group(['middleware' => 'cors', 'prefix' => 'api/v1'], function(){
+	Route::resource('jokes', 'JokesController');
 });
