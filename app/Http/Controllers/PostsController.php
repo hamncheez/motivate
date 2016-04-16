@@ -48,27 +48,30 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        if(! $request->title){
-            return Response::json([
-                'error' => [
-                    'message' => 'Your post needs a title.'
-                ]
-            ], 422);
-        }
-        elseif (! $request->user_id) {
-            return Response::json([
-                'error' => [
-                    'message' => 'You need to be logged in.'
-                ]
-            ], 422);
-        }
-        else{
-            $post = Post::create($request->all());
+        if(!$request->title or !$request->body or $request->pubstatus == null){
             return \Response::json([
-                'message'=>'Post saved.',
-                'post_data'=>$this->transform($post)
-            ]);
+                            'error' => [
+                                'message' => 'missing data'
+                            ]
+                        ], 422);
         }
+        elseif (!\Auth::user()->id) {
+                return \Response::json([
+                    'error'=>['message'=>'user not logged in']
+                ], 401);
+            }
+        $post = new Post;
+        //$post = Post::create($request->all());
+        $post->user_id = \Auth::user()->id;
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->pubstatus = $request->input('pubstatus');
+        $post->save();
+
+        return \Response::json([
+            'message'=>'Post saved.',
+            'post_data'=>$this->transform($post)
+        ], 204);
     }
 
     /**
@@ -122,31 +125,24 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-         if(! $request->title){
-            return \Response::json([
-                'error' => [
-                    'message' => 'Your post needs a title.'
-                ]
-            ], 422);
-        }
-        elseif (! $request->user_id) {
+
+        if (!\Auth::user()->id) {
             return \Response::json([
                 'error' => [
                     'message' => 'You need to be logged in.'
                 ]
             ], 422);
         }
-        else{
-            $post = Post::find($id);
-            $post->title = $request->title;
-            $post->body = $request->body;
-            $post->pubstatus = $request->pubstatus;
-            $post->save();
-            return \Response::json([
-                'message'=>'Post updated.',
-                'post_data'=>$this->transform($post)
-            ]);
-        }
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->pubstatus = $request->pubstatus;
+        $post->save();
+
+        return \Response::json([
+            'message'=>'Post updated.',
+            'post_data'=>$this->transform($post)
+        ], 204);
     }
 
     /**
